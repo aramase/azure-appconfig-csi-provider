@@ -61,16 +61,17 @@ func (c *client) GetKV(key, label string) ([]types.KV, error) {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	var kvs []types.KV
+	var kvs types.KVItems
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
+
 	err = json.Unmarshal(bodyBytes, &kvs)
 	if err != nil {
 		return nil, err
 	}
-	return kvs, nil
+	return kvs.Items, nil
 }
 
 // parseConnectionString parses the connection string into a map of key/value pairs

@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: azure-appconfig-csi-provider
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: azure-appconfig-csi-provider
+  name: azure-appconfig-csi-provider
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: azure-appconfig-csi-provider
+  template:
+    metadata:
+      labels:
+        app: azure-appconfig-csi-provider
+    spec:
+      serviceAccountName: azure-appconfig-csi-provider
+      containers:
+        - name: csi-provider
+          image: aramase/azure-appconfig-csi-provider:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --endpoint=unix:///provider/azure.sock
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 50m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsUser: 0
+            capabilities:
+              drop:
+              - ALL
+          volumeMounts:
+            - mountPath: "/provider"
+              name: providervol
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: type
+                operator: NotIn
+                values:
+                - virtual-kubelet
+      volumes:
+        - name: providervol
+          hostPath:
+            path: "/etc/kubernetes/secrets-store-csi-providers"
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/os: linux

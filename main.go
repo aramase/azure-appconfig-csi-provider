@@ -21,6 +21,7 @@ import (
 
 var (
 	endpoint = flag.String("endpoint", "unix:///tmp/azure-appconfig.sock", "CSI gRPC endpoint")
+	check    = flag.Bool("check", false, "Check if the binary is working")
 
 	log logr.Logger
 )
@@ -38,6 +39,11 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
+	if *check {
+		log.Info("Binary working!")
+		return
+	}
+
 	// Initialize and run the gRPC server
 	proto, addr, err := utils.ParseEndpoint(*endpoint)
 	if err != nil {
@@ -45,7 +51,9 @@ func main() {
 	}
 
 	// setup provider gRPC server
-	s := &server.Server{}
+	s := &server.Server{
+		Log: log,
+	}
 
 	// remove the socket file if it already exists
 	if err := os.Remove(addr); err != nil && !os.IsNotExist(err) {
