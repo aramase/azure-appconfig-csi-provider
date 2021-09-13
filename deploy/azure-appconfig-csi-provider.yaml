@@ -26,7 +26,7 @@ spec:
           image: aramase/azure-appconfig-csi-provider:latest
           imagePullPolicy: IfNotPresent
           args:
-            - --endpoint=unix:///provider/azure.sock
+            - --endpoint=unix:///provider/azure-appconfig.sock
           resources:
             requests:
               cpu: 50m
