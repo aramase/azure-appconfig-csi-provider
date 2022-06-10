@@ -12,7 +12,7 @@ import (
 	"github.com/go-logr/logr"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"sigs.k8s.io/secrets-store-csi-driver/provider/v1alpha1"
 )
 
