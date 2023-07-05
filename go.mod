@@ -6,7 +6,7 @@ require (
 	github.com/go-logr/logr v1.2.0
 	github.com/go-logr/zapr v1.2.0
 	go.uber.org/zap v1.19.1
-	google.golang.org/grpc v1.40.0
+	google.golang.org/grpc v1.53.0
 	gopkg.in/yaml.v3 v3.0.0
 	sigs.k8s.io/secrets-store-csi-driver v1.1.2
 )
@@ -20,7 +20,7 @@ require (
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
-	google.golang.org/genproto v0.0.0-20210831024726-fe130286e0e2 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
